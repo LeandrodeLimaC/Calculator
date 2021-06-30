@@ -1,13 +1,20 @@
 import { useState } from "react";
-// import { Display } from "./components/Display";
 
 function App() {
   const [firstNumber, setfirstNumber] = useState<string>('')
   const [secondNumber, setSecondNumber] = useState<string>('')
-  const [flag, setFlag] = useState<boolean>(false)
+  const [flag, setFlag] = useState<string>('')
   const [result, setResult] = useState<string>()
 
-  function handler(entry: number) {
+  type OperatorType = {
+    [key: string]: (a: number, b: number) => number
+  }
+
+  const operatorsTable: OperatorType = {
+    sum: (a, b) => a + b
+  }
+
+  function setNumber(entry: number) {
     if (!flag) {
       let tmp = `${firstNumber || ''}${entry}`
       return setfirstNumber(tmp)
@@ -17,25 +24,22 @@ function App() {
     return setSecondNumber(tmp)
   }
 
-  function flagaa() {
+  function flagaa(operation: string) {
     if (flag)
       getResult()
     else
-      setFlag(true)
+      setFlag(operation)
   }
 
   function getResult() {
-    const a = sum(Number(firstNumber), Number(secondNumber))
-    setResult(`${a}`)
+    const operator: Function = operatorsTable[flag]
 
-    setFlag(false)
+    const result = operator(Number(firstNumber), Number(secondNumber || firstNumber))
+    setResult(`${result}`)
+
+    setFlag('')
     setfirstNumber('')
     setSecondNumber('')
-  }
-
-  function sum(a: number, b: number): number {
-    console.log(a + (b || a))
-    return a + (b || a)
   }
 
   return (
@@ -43,13 +47,13 @@ function App() {
       <p> first: {firstNumber} </p>
       <p> second: {secondNumber} </p>
       <p> result: {result} </p>
-      <button onClick={() => handler(1)}>1</button>
-      <button onClick={() => handler(2)}>2</button>
-      <button onClick={() => handler(3)}>3</button>
-      <button onClick={() => handler(4)}>4</button>
-      <button onClick={() => handler(5)}>5</button>
+      <button onClick={() => setNumber(1)}>1</button>
+      <button onClick={() => setNumber(2)}>2</button>
+      <button onClick={() => setNumber(3)}>3</button>
+      <button onClick={() => setNumber(4)}>4</button>
+      <button onClick={() => setNumber(5)}>5</button>
 
-      <button onClick={() => flagaa()}>+</button>
+      <button onClick={() => flagaa('sum')}>+</button>
       <button onClick={() => getResult()}>=</button>
     </div>
   );
