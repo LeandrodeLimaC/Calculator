@@ -5,7 +5,8 @@ type OperatorType = {
 }
 
 const operatorsTable: OperatorType = {
-  sum: (a, b) => a + b
+  sum: (a, b) => a + b,
+  multiply: (a, b) => a * b
 }
 
 function App() {
@@ -13,13 +14,6 @@ function App() {
   const [secondNumber, setSecondNumber] = useState<string>('')
   const [operatorName, setOperatorName] = useState<string>('')
   const [result, setResult] = useState<string>()
-
-  // useEffect(() => {
-  //   console.log('firstNumber', firstNumber)
-  //   console.log('secondNumber', secondNumber)
-  //   console.log('operatorName', operatorName)
-  //   console.log('result', result)
-  // }, [firstNumber, secondNumber, operatorName, result])
 
   function setNumber(entry: number) {
     if (!operatorName)
@@ -70,6 +64,7 @@ function App() {
       <button onClick={() => setNumber(5)}>5</button>
 
       <button onClick={() => handleOperator('sum')}>+</button>
+      <button onClick={() => handleOperator('multiply')}>*</button>
       <button onClick={() => getResult()}>=</button>
     </div>
   );
